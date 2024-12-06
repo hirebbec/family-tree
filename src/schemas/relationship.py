@@ -1,4 +1,3 @@
-from db.models.enums import SexEnum
 from schemas.base import BaseSchema
 
 
