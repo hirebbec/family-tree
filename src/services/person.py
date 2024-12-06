@@ -2,6 +2,7 @@ from typing import Sequence
 
 from fastapi import Depends
 
+from core.exceptions import person_not_found_exception
 from db.repository.person import PersonRepository
 from schemas.person import CreatePersonSchema, GetPersonSchema
 from services.base import BaseService
@@ -16,6 +17,9 @@ class PersonService(BaseService):
 
     async def get_person_by_id(self, id: int) -> GetPersonSchema:
         person = await self._person_repository.get_person_by_id(id=id)
+
+        if not person:
+            raise person_not_found_exception
 
         return GetPersonSchema.model_validate(person)
 
