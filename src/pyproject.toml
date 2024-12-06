@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "family-tree"
+version = "0.1.0"
+description = ""
+authors = ["reek8 <reek867@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.112.2"}
+alembic = "^1.13.2"
+uvicorn = "^0.30.6"
+sqlalchemy = "^2.0.33"
+asyncio = "^3.4.3"
+asyncpg = "^0.29.0"
+mypy = "^1.11.2"
+ruff = "^0.6.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
