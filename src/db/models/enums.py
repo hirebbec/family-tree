@@ -8,6 +8,7 @@ class RelationshipTypeEnum(enum.Enum):
     BROTHER = "Брат"
     CHILD = "Ребенок"
 
+
 class SexEnum(enum.Enum):
     MAN = "Мужчина"
     WOMEN = "Женщина"
