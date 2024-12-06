@@ -9,5 +9,5 @@ class CreatePersonSchema(BaseSchema):
     Sex: SexEnum
 
 
-class GetUserSchema(CreatePersonSchema):
+class GetPersonSchema(CreatePersonSchema):
     id: int
