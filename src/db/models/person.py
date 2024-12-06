@@ -1,5 +1,3 @@
-import enum
-
 from sqlalchemy import String, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 
