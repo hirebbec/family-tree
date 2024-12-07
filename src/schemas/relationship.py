@@ -6,7 +6,3 @@ class CreateRelationshipSchema(BaseSchema):
     person_id: int
     relative_id: int
     relationship_type: RelationshipTypeEnum
-
-
-class GetRelationshipSchema(CreateRelationshipSchema):
-    id: int

@@ -4,6 +4,7 @@ from core.exceptions import person_not_found_exception, relationship_conflict_ex
 from db.models.enums import RelationshipTypeEnum, SexEnum
 from db.repository.person import PersonRepository
 from db.repository.relationship import RelationshipRepository
+from schemas.person import GetPersonWithRelationshipTreeSchema
 from schemas.relationship import CreateRelationshipSchema
 from services.base import BaseService
 
@@ -31,6 +32,35 @@ class RelationshipService(BaseService):
 
         await self._relationship_repository.create_relationship(relationship=relationship)
         await self._relationship_repository.create_relationship(relationship=reverse_relationship)
+
+    async def get_relationship_tree_by_id(
+        self, id: int, existing_id: int, relationship_type: RelationshipTypeEnum | None = None
+    ) -> GetPersonWithRelationshipTreeSchema:
+        person = await self._person_repository.get_person_by_id(id=id)
+
+        if not person:
+            raise person_not_found_exception
+
+        person_relationships = await self._relationship_repository.get_relationships_by_person_id(
+            relative_id=id, existing_id=existing_id
+        )
+
+        return GetPersonWithRelationshipTreeSchema.model_encode(
+            person,
+            {
+                "relationships": [
+                    await self.get_relationship_tree_by_id(
+                        person_relationship.person_id,
+                        existing_id=id,
+                        relationship_type=person_relationship.relationship_type,
+                    )
+                    for person_relationship in person_relationships
+                ]
+            },
+            {
+                "relationship_type": relationship_type,
+            },
+        )
 
     async def __get_reverse_relationship(self, relationship: CreateRelationshipSchema) -> CreateRelationshipSchema:
         relative_sex = (await self._person_repository.get_person_by_id(id=relationship.relative_id)).Sex
