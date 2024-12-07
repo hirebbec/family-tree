@@ -11,8 +11,6 @@ class Relationship(BaseModel, IDMixin, CreatedAtMixin, UpdatedAtMixin):
 
     person_id: Mapped[int] = mapped_column(Integer, nullable=False)
     relative_id: Mapped[int] = mapped_column(Integer, nullable=False)
-    relationship_type: Mapped[RelationshipTypeEnum] = mapped_column(
-        Enum(RelationshipTypeEnum), nullable=False
-    )
+    relationship_type: Mapped[RelationshipTypeEnum] = mapped_column(Enum(RelationshipTypeEnum), nullable=False)
 
     __table_args__ = (UniqueConstraint("person_id", "relative_id"), {})

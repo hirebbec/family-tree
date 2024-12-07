@@ -20,12 +20,6 @@ class BaseSchema(BaseModel):
     @classmethod
     def model_encode(cls, *objs: Any) -> Self:
         try:
-            return cls.model_validate(
-                {
-                    key: value
-                    for obj in objs
-                    for key, value in jsonable_encoder(obj).items()
-                }
-            )
+            return cls.model_validate({key: value for obj in objs for key, value in jsonable_encoder(obj).items()})
         except ValidationError:
             raise ModelEncodeValidationError("Validation error in model_encode")
