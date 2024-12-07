@@ -63,7 +63,7 @@ class RelationshipService(BaseService):
         )
 
     async def __get_reverse_relationship(self, relationship: CreateRelationshipSchema) -> CreateRelationshipSchema:
-        relative_sex = (await self._person_repository.get_person_by_id(id=relationship.relative_id)).Sex
+        relative_sex = (await self._person_repository.get_person_by_id(id=relationship.relative_id)).sex
 
         if (
             relationship.relationship_type == RelationshipTypeEnum.MOTHER

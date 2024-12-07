@@ -8,7 +8,7 @@ class CreatePersonSchema(BaseSchema):
     name: str
     surname: str
     patronymic: str
-    Sex: SexEnum
+    sex: SexEnum
 
 
 class GetPersonSchema(CreatePersonSchema):
