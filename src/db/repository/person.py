@@ -14,7 +14,7 @@ class PersonRepository(BaseDatabaseRepository):
         await self._session.execute(query)
         await self._session.commit()
 
-    async def get_person_by_id(self, id: int) -> Person:
+    async def get_person_by_id(self, id: int) -> Person | None:
         query = select(Person).where(Person.id == id)
 
         result = await self._session.execute(query)

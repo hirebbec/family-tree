@@ -12,4 +12,4 @@ class Person(BaseModel, IDMixin, CreatedAtMixin, UpdatedAtMixin):
     name: Mapped[str] = mapped_column(String, nullable=False, unique=False)
     surname: Mapped[str] = mapped_column(String, nullable=False, unique=False)
     patronymic: Mapped[str] = mapped_column(String, nullable=False, unique=False)
-    Sex: Mapped[SexEnum] = mapped_column(Enum(SexEnum), nullable=False, unique=False)
+    sex: Mapped[SexEnum] = mapped_column(Enum(SexEnum), nullable=False, unique=False)
