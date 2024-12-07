@@ -14,7 +14,7 @@ async def get_person_by_id(id: int, person_service: PersonService = Depends()) -
     return await person_service.get_person_by_id(id=id)
 
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=Sequence[GetPersonSchema])
+@router.get("/all", status_code=status.HTTP_200_OK, response_model=Sequence[GetPersonSchema])
 async def get_all_persons(
     person_service: PersonService = Depends(),
 ) -> Sequence[GetPersonSchema]:
