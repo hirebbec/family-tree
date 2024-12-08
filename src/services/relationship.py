@@ -17,6 +17,9 @@ class RelationshipService(BaseService):
     ):
         self._relationship_repository = relationship_repository
         self._person_repository = person_repository
+        self.ids.clear()
+
+    ids: set = set()
 
     async def create_relationship(self, relationship: CreateRelationshipSchema) -> None:
         if relationship.person_id == relationship.relative_id:
@@ -41,9 +44,14 @@ class RelationshipService(BaseService):
         if not person:
             raise person_not_found_exception
 
-        person_relationships = await self._relationship_repository.get_relationships_by_person_id(
-            relative_id=id, existing_id=existing_id
-        )
+        if id in self.ids:
+            person_relationships = []
+        else:
+            person_relationships = await self._relationship_repository.get_relationships_by_person_id(
+                relative_id=id, existing_id=existing_id
+            )
+
+            self.ids.add(id)
 
         return GetPersonWithRelationshipTreeSchema.model_encode(
             person,
@@ -54,7 +62,7 @@ class RelationshipService(BaseService):
                         existing_id=id,
                         relationship_type=person_relationship.relationship_type,
                     )
-                    for person_relationship in person_relationships
+                    for person_relationship in person_relationships if person_relationship.person_id not in self.ids
                 ]
             },
             {

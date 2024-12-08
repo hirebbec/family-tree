@@ -15,7 +15,7 @@ async def create_relationship(
     await relationship_service.create_relationship(relationship=relationship)
 
 
-@router.get("/{id}", status_code=status.HTTP_201_CREATED, response_model=GetPersonWithRelationshipTreeSchema)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=GetPersonWithRelationshipTreeSchema)
 async def get_relationship_tree_by_id(
     id: int,
     relationship_service: RelationshipService = Depends(),
