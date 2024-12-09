@@ -2,7 +2,10 @@ from db.models.enums import RelationshipTypeEnum
 from schemas.base import BaseSchema
 
 
-class CreateRelationshipSchema(BaseSchema):
+class UpdateRelationshipSchema(BaseSchema):
+    relationship_type: RelationshipTypeEnum
+
+
+class CreateRelationshipSchema(UpdateRelationshipSchema):
     person_id: int
     relative_id: int
-    relationship_type: RelationshipTypeEnum

@@ -4,11 +4,14 @@ from db.models.enums import SexEnum, RelationshipTypeEnum
 from schemas.base import BaseSchema
 
 
-class CreatePersonSchema(BaseSchema):
+class UpdatePersonSchema(BaseSchema):
     name: str
     surname: str
     patronymic: str
     sex: SexEnum
+
+
+class CreatePersonSchema(UpdatePersonSchema): ...
 
 
 class GetPersonSchema(CreatePersonSchema):

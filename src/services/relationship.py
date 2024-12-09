@@ -1,11 +1,15 @@
 from fastapi import Depends
 
-from core.exceptions import person_not_found_exception, relationship_conflict_exception
+from core.exceptions import (
+    person_not_found_exception,
+    relationship_conflict_exception,
+    relationship_not_found_exception,
+)
 from db.models.enums import RelationshipTypeEnum, SexEnum
 from db.repository.person import PersonRepository
 from db.repository.relationship import RelationshipRepository
 from schemas.person import GetPersonWithRelationshipTreeSchema
-from schemas.relationship import CreateRelationshipSchema
+from schemas.relationship import CreateRelationshipSchema, UpdateRelationshipSchema
 from services.base import BaseService
 
 
@@ -62,12 +66,37 @@ class RelationshipService(BaseService):
                         existing_id=id,
                         relationship_type=person_relationship.relationship_type,
                     )
-                    for person_relationship in person_relationships if person_relationship.person_id not in self.ids
+                    for person_relationship in person_relationships
+                    if person_relationship.person_id not in self.ids
                 ]
             },
             {
                 "relationship_type": relationship_type,
             },
+        )
+
+    async def update_relationship_by_id(self, id: int, relationship: UpdateRelationshipSchema) -> None:
+        if not await self._relationship_repository.get_relationship_by_id(id=id):
+            raise relationship_not_found_exception
+
+        await self._relationship_repository.update_relationship_by_id(id=id, relationship=relationship)
+
+        relationship = await self._relationship_repository.get_relationship_by_id(id=id)
+        reverse_relationship = await self.__get_reverse_relationship(
+            relationship=CreateRelationshipSchema.model_encode(relationship)
+        )
+
+        await self._relationship_repository.update_relationship(relationship=reverse_relationship)
+
+    async def delete_relationship_by_id(self, id: int) -> None:
+        relationship = await self._relationship_repository.get_relationship_by_id(id=id)
+
+        if not relationship:
+            raise relationship_not_found_exception
+
+        await self._relationship_repository.delete_relationship_by_id(id=id)
+        await self._relationship_repository.delete_relationship_by_person_id_and_relative_id(
+            person_id=relationship.relative_id, relative_id=relationship.person_id
         )
 
     async def __get_reverse_relationship(self, relationship: CreateRelationshipSchema) -> CreateRelationshipSchema:

@@ -12,6 +12,11 @@ person_not_found_exception = HTTPException(
     detail="Person not found",
 )
 
+relationship_not_found_exception = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="Relationship not found",
+)
+
 relationship_conflict_exception = HTTPException(
     status_code=status.HTTP_409_CONFLICT,
     detail="Relationship conflict",

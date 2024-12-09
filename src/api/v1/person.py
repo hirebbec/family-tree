@@ -3,7 +3,7 @@ from typing import Sequence
 from fastapi import APIRouter, status, Depends
 
 
-from schemas.person import CreatePersonSchema, GetPersonSchema
+from schemas.person import CreatePersonSchema, GetPersonSchema, UpdatePersonSchema
 from services.person import PersonService
 
 router = APIRouter(prefix="/person", tags=["Persons"])
@@ -24,3 +24,13 @@ async def get_person_by_id(id: int, person_service: PersonService = Depends()) -
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=None)
 async def create_person(person: CreatePersonSchema, person_service: PersonService = Depends()) -> None:
     await person_service.create_person(person=person)
+
+
+@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=None)
+async def update_person_by_id(id: int, person: UpdatePersonSchema, person_service: PersonService = Depends()) -> None:
+    await person_service.update_person_by_id(id=id, person=person)
+
+
+@router.delete("/{id}", status_code=status.HTTP_200_OK, response_model=None)
+async def delete_person_by_id(id: int, person_service: PersonService = Depends()) -> None:
+    await person_service.delete_person_by_id(id=id)
