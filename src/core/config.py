@@ -17,11 +17,11 @@ class Settings(BaseSettings):
     SERVER_HOST: str = "0.0.0.0"
     SERVER_PORT: int = 8888
 
-    POSTGRES_HOST: str
-    POSTGRES_PORT: int
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
+    POSTGRES_HOST: str = "family-tree-db"
+    POSTGRES_PORT: int = 5432
+    POSTGRES_USER: str = "family-tree-db"
+    POSTGRES_PASSWORD: str = "family-tree-db"
+    POSTGRES_DB: str = "family-tree-db"
 
     @functools.cached_property
     def postgres_dsn(self) -> str:
